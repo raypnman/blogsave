@@ -4,8 +4,7 @@ A simple python script to save the blogs from Nogizaka46.
 
 ## Instructions
 
-Only tested inside WSL with Python 3.12.7
-This will save all the blogs from the selected member at once!!
+Only tested inside WSL with Python 3.12.7. This will save all the blogs from the selected member at once!
 
 1. Install the required packages in the requirements.txt
 2. Update "main_folder" and "arti_code" in blogsave.py
