@@ -27,16 +27,16 @@ def blogsave(main_folder, arti_code):
     # check the total blog numbers and get all blogs
     if int(blogJSON['count']) > 100:
         for i in range(100, int(blogJSON['count']), 100):
-                exurl_params = {
-                    "st": i,
-                    "ct": arti_code
-                }
-                exblog_url = f"{base_url}{blog_api}?{urlencode(exurl_params)}"
-                exres = requests.get(exblog_url)
-                exresContent = exres.content.decode("utf-8").lstrip("\'res(").rstrip(");\'")
-                exblogJSON = json.loads(exresContent)
-                for blog in exblogJSON['data']:
-                    blogJSON['data'].append(blog)
+            exurl_params = {
+                "st": i,
+                "ct": arti_code
+            }
+            exblog_url = f"{base_url}{blog_api}?{urlencode(exurl_params)}"
+            exres = requests.get(exblog_url)
+            exresContent = exres.content.decode("utf-8").lstrip("\'res(").rstrip(");\'")
+            exblogJSON = json.loads(exresContent)
+            for blog in exblogJSON['data']:
+                blogJSON['data'].append(blog)
 
     # process blog by blog
     for idx, blog in enumerate(blogJSON['data']):
@@ -53,15 +53,16 @@ def blogsave(main_folder, arti_code):
         soup = BeautifulSoup(blog['text'], 'html.parser')
         img_tags = soup.find_all('img')
         for img_tag in img_tags:
-            img_url = img_tag.get('src')
-            if img_url == None:
+            if img_tag.get('src') == None:
                 continue
-            elif not img_url.startswith('http'):
-                    img_url = f"{base_url}{img_url}"
+            elif not img_tag.get('src').startswith('http'):
+                img_url = f"{base_url}{img_tag.get('src')}"
+            else:
+                img_url = img_tag.get('src')
             file_name = img_url.split("/")[-1]
             img_response=requests.get(img_url)
             with open(f"{blog_folder}/{file_name}", 'wb') as f:
-                            f.write(img_response.content)
+                f.write(img_response.content)
             # replacing the img src with file name only
             img_tag['src'] = file_name
 
