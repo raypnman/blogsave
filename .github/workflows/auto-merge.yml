@@ -60,7 +60,8 @@ jobs:
 
           if ! review_error=$(gh api --method POST "$endpoint/reviews" -f event=APPROVE \
             -f commit_id="$sha" -f body="Required CI jobs passed for this commit." 2>&1); then
-            if [[ "$review_error" != *"GitHub Actions is not permitted to create or approve pull requests"* ]]; then
+            if [[ "$review_error" != *"GitHub Actions is not permitted to create or approve pull requests"* &&
+                  "$review_error" != *"GitHub Actions is not permitted to approve pull requests"* ]]; then
               printf '%s\n' "$review_error" >&2
               exit 1
             fi
